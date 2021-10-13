@@ -8,6 +8,7 @@ import MovieHeader from "./components/MovieHeader";
 
 import EditMovieForm from "./components/EditMovieForm";
 import FavoriteMovieList from "./components/FavoriteMovieList";
+import AddMovieForm from "./components/AddMovieForm";
 
 import axios from "axios";
 
@@ -24,11 +25,15 @@ const App = (props) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [movies]);
+  }, []);
 
-  const deleteMovie = (id) => {};
+  const deleteMovie = (id) => {
+    setMovies(movies.filter((movie) => movie.id !== id));
+  };
 
-  const addToFavorites = (movie) => {};
+  const addToFavorites = (movie) => {
+    setMovies([...movies, movie]);
+  };
 
   return (
     <div>
@@ -46,11 +51,14 @@ const App = (props) => {
 
           <Switch>
             <Route path="/movies/edit/:id">
-              <EditMovieForm />
+              <EditMovieForm setMovies={setMovies} />
+            </Route>
+            <Route path="/movies/add">
+              <AddMovieForm movies={movies} setMovies={setMovies} />
             </Route>
 
             <Route path="/movies/:id">
-              <Movie />
+              <Movie deleteMovie={deleteMovie} />
             </Route>
 
             <Route path="/movies">

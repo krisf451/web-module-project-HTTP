@@ -34,6 +34,10 @@ const Movie = (props) => {
       });
   };
 
+  const handleFavClick = () => {
+    addToFavorites(movie);
+  };
+
   return (
     <div className="modal-page col">
       <div className="modal-dialog">
@@ -73,7 +77,9 @@ const Movie = (props) => {
               </section>
 
               <section>
-                <span className="m-2 btn btn-dark">Favorite</span>
+                <span onClick={handleFavClick} className="m-2 btn btn-dark">
+                  Favorite
+                </span>
                 <Link
                   to={`/movies/edit/${movie.id}`}
                   className="m-2 btn btn-success"

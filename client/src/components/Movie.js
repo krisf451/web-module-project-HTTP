@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 
 import axios from "axios";
+import DeleteMovieModal from "./DeleteMovieModal";
 
 const Movie = (props) => {
   const { addToFavorites, deleteMovie } = props;
 
   const [movie, setMovie] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [showDelButton, setShowDelButton] = useState(true);
 
   const { id } = useParams();
   const { push } = useHistory();
@@ -37,6 +40,14 @@ const Movie = (props) => {
   const handleFavClick = () => {
     addToFavorites(movie);
   };
+  const handleModalClick = () => {
+    setShowModal(true);
+    setShowDelButton(false);
+  };
+  const handleCancelClick = () => {
+    setShowModal(false);
+    setShowDelButton(true);
+  };
 
   return (
     <div className="modal-page col">
@@ -46,6 +57,13 @@ const Movie = (props) => {
             <h4 className="modal-title">{movie.title} Details</h4>
           </div>
           <div className="modal-body">
+            {showModal && (
+              <DeleteMovieModal
+                handleCancelClick={handleCancelClick}
+                setShowModal={setShowModal}
+                handleDelete={handleDelete}
+              />
+            )}
             <div className="flexContainer">
               <section className="movie-details">
                 <div>
@@ -86,13 +104,15 @@ const Movie = (props) => {
                 >
                   Edit
                 </Link>
-                <span onClick={handleDelete} className="delete">
-                  <input
-                    type="button"
-                    className="m-2 btn btn-danger"
-                    value="Delete"
-                  />
-                </span>
+                {showDelButton && (
+                  <span onClick={handleModalClick} className="delete">
+                    <input
+                      type="button"
+                      className="m-2 btn btn-danger"
+                      value="Delete"
+                    />
+                  </span>
+                )}
               </section>
             </div>
           </div>
